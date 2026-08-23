@@ -1,10 +1,10 @@
-# SubLingo Privacy Policy
+# Overheard Privacy Policy
 
 **Last updated: [08/18/2026]**
 
-SubLingo ("the extension") is a Chrome extension that displays dual subtitles on YouTube videos and provides click-to-translate functionality. This policy explains what data SubLingo interacts with, how it's used, and what is — and isn't — collected.
+Overheard ("the extension") is a Chrome extension that displays dual subtitles on YouTube videos and provides click-to-translate functionality. This policy explains what data Overheard interacts with, how it's used, and what is — and isn't — collected.
 
-## What SubLingo does
+## What Overheard does
 
 - Reads caption/subtitle data from the YouTube video you are currently watching, in order to display it as an on-video overlay in your chosen languages.
 - When you tap a word in the subtitles, sends that word's text to a translation service to retrieve its meaning.
@@ -16,8 +16,8 @@ SubLingo ("the extension") is a Chrome extension that displays dual subtitles on
 
 The only data that leaves your device is:
 
-- **Word text for translation** — when you tap a word in the subtitles, that word is sent to Google's translation service (`translate.googleapis.com`) to retrieve its translation. This is the only site content SubLingo transmits, and it happens only when you actively tap a word.
-- **Caption requests to YouTube** — SubLingo requests caption/subtitle tracks directly from YouTube for the video you're watching, the same way YouTube's own player does, in order to display them in the extension's overlay.
+- **Word text for translation** — when you tap a word in the subtitles, that word is sent to Google's translation service (`translate.googleapis.com`) to retrieve its translation. This is the only site content Overheard transmits, and it happens only when you actively tap a word.
+- **Caption requests to YouTube** — Overheard requests caption/subtitle tracks directly from YouTube for the video you're watching, the same way YouTube's own player does, in order to display them in the extension's overlay.
 
 We do not collect or transmit:
 - Personal identifying information (name, email, address, etc.)
@@ -29,7 +29,7 @@ We do not collect or transmit:
 
 ## Local storage
 
-SubLingo uses your browser's built-in storage (`chrome.storage`) to save, entirely on your own device:
+Overheard uses your browser's built-in storage (`chrome.storage`) to save, entirely on your own device:
 
 - Your chosen primary and learning languages
 - Subtitle appearance settings (font, size, colors, outline, background)
@@ -41,19 +41,15 @@ None of this local data is transmitted to us or to any third party. It stays on 
 
 ## Third-party services
 
-- **YouTube** — SubLingo requests caption data from YouTube for the video you're actively watching. This is subject to [YouTube's own Privacy Policy](https://policies.google.com/privacy).
+- **YouTube** — Overheard requests caption data from YouTube for the video you're actively watching. This is subject to [YouTube's own Privacy Policy](https://policies.google.com/privacy).
 - **Google Translate** — word translations are requested from Google's translation service. This is subject to [Google's Privacy Policy](https://policies.google.com/privacy).
 
 We do not control how these third-party services handle data on their end; please refer to their respective policies for details.
 
 ## No selling or unrelated use of data
 
-We do not sell or transfer user data to third parties outside of what's needed to provide SubLingo's core functionality (namely, the translation lookups described above). We do not use any data for purposes unrelated to displaying subtitles and translations, and we do not use any data to determine creditworthiness or for lending purposes.
+We do not sell or transfer user data to third parties outside of what's needed to provide Overheard's core functionality (namely, the translation lookups described above). We do not use any data for purposes unrelated to displaying subtitles and translations, and we do not use any data to determine creditworthiness or for lending purposes.
 
 ## Changes to this policy
 
-If this policy changes, the "Last updated" date at the top will be revised. Continued use of SubLingo after changes are posted constitutes acceptance of the updated policy.
-
-## Contact
-
-Questions about this policy or how SubLingo handles data can be sent to **sublingosupport@gmail.com**.
+If this policy changes, the "Last updated" date at the top will be revised. Continued use of Overheard after changes are posted constitutes acceptance of the updated policy.
