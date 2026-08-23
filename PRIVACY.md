@@ -1,6 +1,6 @@
 # Overheard Privacy Policy
 
-**Last updated: [08/18/2026]**
+**Last updated: [08/23/2026]**
 
 Overheard ("the extension") is a Chrome extension that displays dual subtitles on YouTube videos and provides click-to-translate functionality. This policy explains what data Overheard interacts with, how it's used, and what is — and isn't — collected.
 
