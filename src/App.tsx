@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getSettings, setSettings, clearWordHistory } from './shared/storage';
 import type { OverheardSettings, CaptionStyle, HistoryEntry, PopupTab } from './shared/storage';
 import { FONT_FAMILIES, DEFAULT_CAPTION_STYLE, DEFAULT_FONT_SIZE, DEFAULT_OVERLAY_LAYOUT, GOOGLE_FONTS_URL } from './shared/storage';

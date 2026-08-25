@@ -68,28 +68,39 @@ const waitForTracklist = async (maxAttempts = 12, delayMs = 300): Promise<any[]>
   const originalFetch = window.fetch;
 
   const followUpWithTranslation = async (baseUrl: string, attempt = 1) => {
-    if (!pendingTranslation) return;
-    const { targetLangCode } = pendingTranslation;
-    if (attempt === 1) pendingTranslation = null;
+  if (!pendingTranslation) return;
+  const { targetLangCode } = pendingTranslation;
+  if (attempt === 1) pendingTranslation = null;
 
-    const translatedUrl = buildTranslatedUrl(baseUrl, targetLangCode);
-    try {
-      const res = await originalFetch.call(window, translatedUrl, { credentials: 'include' });
-      const text = await res.text();
-      console.log(`[Overheard Hook] Direct translation fetch attempt=${attempt} status=${res.status} length=${text.length}`);
+  const translatedUrl = buildTranslatedUrl(baseUrl, targetLangCode);
+  try {
+    const res = await originalFetch.call(window, translatedUrl, { credentials: 'include' });
+    const text = await res.text();
+    console.log(`[Overheard Hook] Direct translation fetch attempt=${attempt} status=${res.status} length=${text.length}`);
 
-      if (text.length === 0 && attempt < 4) {
-        setTimeout(() => {
-          pendingTranslation = { targetLangCode };
-          followUpWithTranslation(baseUrl, attempt + 1);
-        }, 400 * attempt);
-        return;
-      }
-      post(text, translatedUrl);
-    } catch (e) {
-      console.warn('[Overheard Hook] Direct translation fetch failed', e);
+    if (text.length === 0 && attempt < 4) {
+      setTimeout(() => {
+        pendingTranslation = { targetLangCode };
+        followUpWithTranslation(baseUrl, attempt + 1);
+      }, 400 * attempt);
+      return;
     }
-  };
+
+    if (text.length === 0) {
+      // Exhausted our own retries — tell index.tsx immediately instead of
+      // letting its outer capture sit idle until ITS timeout fires on its
+      // own. This is what was silently burning the full 8s previously.
+      console.warn('[Overheard Hook] Translation fetch exhausted retries, signaling failure early');
+      window.postMessage({ type: 'OVERHEARD_TRANSLATION_FAILED', url: translatedUrl }, '*');
+      return;
+    }
+
+    post(text, translatedUrl);
+  } catch (e) {
+    console.warn('[Overheard Hook] Direct translation fetch failed', e);
+    window.postMessage({ type: 'OVERHEARD_TRANSLATION_FAILED', url: translatedUrl }, '*');
+  }
+};
 
   const originalOpen = XMLHttpRequest.prototype.open;
   XMLHttpRequest.prototype.open = function (_method: string, url: string | URL) {

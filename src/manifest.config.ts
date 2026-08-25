@@ -5,7 +5,21 @@ export default defineManifest({
   name: 'Overheard',
   version: '0.1.0',
   description: 'Learn languages by watching YouTube with dual subtitles.',
-  action: { default_popup: 'index.html' },
+  icons: {
+    16: 'src/assets/icons/icon16.png',
+    32: 'src/assets/icons/icon32.png',
+    48: 'src/assets/icons/icon48.png',
+    128: 'src/assets/icons/icon128.png',
+  },
+  action: {
+    default_popup: 'index.html',
+    default_icon: {
+      16: 'src/assets/icons/icon16.png',
+      32: 'src/assets/icons/icon32.png',
+      48: 'src/assets/icons/icon48.png',
+      128: 'src/assets/icons/icon128.png',
+    },
+  },
   permissions: ['storage'],
   host_permissions: [
     'https://www.youtube.com/*',
