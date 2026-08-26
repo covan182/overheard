@@ -4,7 +4,7 @@
 
 Overheard is a browser extension that overlays two synchronized subtitle tracks on top of any YouTube video — your native language and the language you're learning — so you can follow along and pick up vocabulary in context, without leaving the video.
 
-**[Install Overheard from the Chrome Web Store](CHROME_WEB_STORE_LINK_HERE)**
+**[Install Overheard from the Chrome Web Store](https://chromewebstore.google.com/detail/overheard/blkeniokmncddeinahegljglobpimadl?authuser=1&hl=pt-BR)**
 
 ---
 
@@ -16,7 +16,7 @@ Overheard is a browser extension that overlays two synchronized subtitle tracks 
 - **Hear the pronunciation** — every translation popup (and every entry in History) includes a speaker icon for both the original word and its translation, read aloud using your browser's built-in text-to-speech.
 - **Fully customizable appearance** — font, text size, primary/secondary colors, outline color and thickness, and background opacity, all live-editable from the popup.
 - **Built-in style presets** — Netflix, Prime Video, YouTube Classic, and Clean Minimal, plus the ability to save your own custom presets.
-- **Draggable, on-video positioning** — move the subtitle box anywhere within the video's own bounds, correctly across normal, theater, and fullscreen modes.
+- **Draggable, on-video positioning** — move the subtitle box anywhere within the video's own bounds, correctly across normal, theater, and full-screen modes.
 - **100+ supported languages** — pick any primary/learning language pair from a full, searchable language list.
 - **Free and open source.**
 
@@ -43,15 +43,15 @@ Because Overheard relies entirely on captions YouTube itself provides:
 
 The easiest way to get Overheard is straight from the Chrome Web Store:
 
-**[Install Overheard](CHROME_WEB_STORE_LINK_HERE)**
+**[Install Overheard](https://chromewebstore.google.com/detail/overheard/blkeniokmncddeinahegljglobpimadl?authuser=1&hl=pt-BR)**
 
-Once installed, open any YouTube video and the SubLingo overlay will appear automatically once captions are available.
+Once installed, open any YouTube video and the Overheard overlay will appear automatically once captions are available.
 
 ### Running from source (for development)
 
 ```bash
-git clone https://github.com/RaphaelCovan/sublingo.git
-cd sublingo
+git clone https://github.com/covan182/overheard.git
+cd overheard
 npm install
 npm run dev
 ```
@@ -95,7 +95,7 @@ src/
 ## Known limitations
 
 - **YouTube only**, for now — see [Roadmap](#roadmap).
-- Requires the video to have *some* caption track (manual or auto-generated) in a language SubLingo can translate from.
+- Requires the video to have *some* caption track (manual or auto-generated) in a language Overheard can translate from.
 - Click-to-translate uses word-level lookups rather than full sentence context, so results can occasionally miss nuance that a native speaker would catch from surrounding context.
 - Chrome-only (Manifest V3, CRXJS-based build).
 
@@ -126,4 +126,4 @@ MIT — see [LICENSE](LICENSE) for details. You're free to use, modify, and redi
 
 ---
 
-Developed by [@RaphaelCovan](https://github.com/RaphaelCovan)
+Developed by [@covan182](https://github.com/covan182)
