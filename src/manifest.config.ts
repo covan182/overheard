@@ -3,7 +3,7 @@ import { defineManifest } from '@crxjs/vite-plugin';
 export default defineManifest({
   manifest_version: 3,
   name: 'Overheard',
-  version: '0.1.0',
+  version: '0.1.2',
   description: 'Learn languages by watching YouTube with dual subtitles.',
   icons: {
     16: 'src/assets/icons/icon16.png',

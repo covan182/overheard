@@ -57,6 +57,9 @@ const App = () => {
   const handleVolumeChangeRef = useRef<(() => void) | null>(null);
   const isLoadingSubtitles = useRef(false);
   const loadGeneration = useRef(0);
+  const navigateDebounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [primaryLoading, setPrimaryLoading] = useState(false);
+  const [secondaryLoading, setSecondaryLoading] = useState(false);
 
   const getLiveTracks = (): Promise<LiveTrack[]> => {
     return new Promise((resolve) => {
@@ -153,13 +156,29 @@ const App = () => {
       return;
     }
 
-    const tracks = await getLiveTracks();
-    if (loadGeneration.current !== myGeneration) return; // a newer call superseded this one
+    setPrimaryLoading(true);
+    setSecondaryLoading(true);
+
+    let tracks = await getLiveTracks();
+    if (loadGeneration.current !== myGeneration) return;
+
+    let tracksAttempt = 1;
+    while (tracks.length === 0 && tracksAttempt < 3) {
+      console.warn(`[Overheard] No tracks on attempt ${tracksAttempt} — retrying`);
+      await new Promise(r => setTimeout(r, 1000));
+      if (loadGeneration.current !== myGeneration) return;
+      tracks = await getLiveTracks();
+      tracksAttempt++;
+    }
+
+    if (loadGeneration.current !== myGeneration) return;
 
     if (tracks.length === 0) {
-      console.warn('[Overheard] No caption tracks found for this video');
+      console.warn('[Overheard] No caption tracks found for this video after retries');
       engine.current.setPrimaryEntries([]);
       engine.current.setSecondaryEntries([]);
+      setPrimaryLoading(false);
+      setSecondaryLoading(false);
       return;
     }
 
@@ -174,6 +193,7 @@ const App = () => {
     } else {
       console.warn('[Overheard] Could not resolve a primary track config');
     }
+    setPrimaryLoading(false);
 
     await new Promise(r => setTimeout(r, 300));
     if (loadGeneration.current !== myGeneration) return;
@@ -186,6 +206,7 @@ const App = () => {
     } else {
       console.warn('[Overheard] Could not resolve a secondary track config');
     }
+    setSecondaryLoading(false);
 
     lastLoadedVideoId.current = videoId;
     lastLoadedLangs.current = langsKey;
@@ -239,22 +260,32 @@ const App = () => {
       video.addEventListener('volumechange', handleVolumeChange);
       handleVolumeChange();
     };
-    
+
     const handleNavigate = () => {
       const newVideoId = getCurrentVideoId();
-      attachToVideo();
 
-      if (newVideoId && newVideoId === lastLoadedVideoId.current) {
-        console.log('[Overheard] yt-navigate-finish fired but video unchanged — skipping reload');
-        return;
-      }
+      if (navigateDebounceTimer.current) clearTimeout(navigateDebounceTimer.current);
 
-      console.log('[Overheard] yt-navigate-finish — reloading subtitles for new video');
-      engine.current.setPrimaryEntries([]);
-      engine.current.setSecondaryEntries([]);
-      setDisplayPrimary('');
-      setDisplaySecondary('');
-      loadSubtitles();
+      navigateDebounceTimer.current = setTimeout(() => {
+        attachToVideo();
+
+        if (!newVideoId) {
+          console.log('[Overheard] yt-navigate-finish fired with no readable video ID yet — ignoring');
+          return;
+        }
+
+        if (newVideoId === lastLoadedVideoId.current) {
+          console.log('[Overheard] yt-navigate-finish fired but video unchanged — skipping reload');
+          return;
+        }
+
+        console.log('[Overheard] yt-navigate-finish — reloading subtitles for new video');
+        engine.current.setPrimaryEntries([]);
+        engine.current.setSecondaryEntries([]);
+        setDisplayPrimary('');
+        setDisplaySecondary('');
+        loadSubtitles();
+      }, 400);
     };
 
     const handleMessage = (event: MessageEvent) => {
@@ -333,6 +364,8 @@ const App = () => {
       secondaryLanguage={secondaryLangCode}
       onWordClick={handleWordClick}
       speechVolume={speechVolume}
+      primaryLoading={primaryLoading}
+      secondaryLoading={secondaryLoading}
     />
   );
 };

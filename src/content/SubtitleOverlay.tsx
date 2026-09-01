@@ -15,6 +15,8 @@ interface Props {
   secondaryLanguage: string;
   onWordClick: (word: string, sourceLang: string, targetLang: string) => Promise<string | null>;
   speechVolume: number;
+  primaryLoading: boolean;
+  secondaryLoading: boolean;
 }
 
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
@@ -62,6 +64,7 @@ interface ClickCandidate {
 const SubtitleOverlay: React.FC<Props> = ({
   primaryText, secondaryText, captionStyle, fontSize, layout, onLayoutChange,
   primaryLanguage, secondaryLanguage, onWordClick, speechVolume,
+  primaryLoading, secondaryLoading,
 }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const [bounds, setBounds] = useState({ width: 0, height: 0 });
@@ -200,7 +203,7 @@ const SubtitleOverlay: React.FC<Props> = ({
     });
   };
 
-  if (!primaryText && !secondaryText) return null;
+  if (!primaryText && !secondaryText && !primaryLoading && !secondaryLoading) return null;
   if (!pixelPos) return null;
 
   return (
@@ -208,25 +211,23 @@ const SubtitleOverlay: React.FC<Props> = ({
       <style>{`
         .overheard-word { cursor: pointer; }
         .overheard-word:hover { text-decoration: underline; text-underline-offset: 3px; }
-        .overheard-speaker-btn {
-          background: transparent;
-          border: none;
-          color: inherit;
-          cursor: pointer;
-          padding: 0 0 0 8px;
-          font-size: 15px;
-          line-height: 1;
-          pointer-events: auto;
-          vertical-align: middle;
-          opacity: 0.85;
+        .overheard-speaker-btn { /* unchanged */ }
+        .overheard-popover-row { /* unchanged */ }
+        @keyframes overheard-pulse {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.9; }
         }
-        .overheard-speaker-btn:hover { opacity: 1; }
-        .overheard-popover-row {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          white-space: nowrap;
+        .overheard-loading-dots span {
+          display: inline-block;
+          width: 5px;
+          height: 5px;
+          margin: 0 2px;
+          border-radius: 50%;
+          background: currentColor;
+          animation: overheard-pulse 1.2s ease-in-out infinite;
         }
+        .overheard-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .overheard-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
       `}</style>
       <div
         ref={boxRef}
@@ -251,7 +252,7 @@ const SubtitleOverlay: React.FC<Props> = ({
           fontSize: `${fontSize}px`,
         }}
       >
-        {primaryText && (
+        {primaryText ? (
           <div style={{
             color: captionStyle.primaryColor,
             fontSize: '1em',
@@ -262,8 +263,12 @@ const SubtitleOverlay: React.FC<Props> = ({
           }}>
             {renderClickableText(primaryText, primaryLanguage, secondaryLanguage)}
           </div>
-        )}
-        {secondaryText && (
+        ) : primaryLoading ? (
+          <div className="overheard-loading-dots" style={{ color: captionStyle.primaryColor, textAlign: 'center' }}>
+            <span></span><span></span><span></span>
+          </div>
+        ) : null}
+        {secondaryText ? (
           <div style={{
             color: captionStyle.secondaryColor,
             fontSize: '0.7em',
@@ -275,7 +280,11 @@ const SubtitleOverlay: React.FC<Props> = ({
           }}>
             {renderClickableText(secondaryText, secondaryLanguage, primaryLanguage)}
           </div>
-        )}
+        ) : secondaryLoading ? (
+          <div className="overheard-loading-dots" style={{ color: captionStyle.secondaryColor, textAlign: 'center', marginTop: '0.1em' }}>
+            <span></span><span></span><span></span>
+          </div>
+        ) : null}
       </div>
 
       {popover && (
